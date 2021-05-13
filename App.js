@@ -117,7 +117,7 @@ export default function App() {
               color: 'white',
             }}
           >
-            Đăng nhập
+            Đăng Nhập
           </Text>
         </TouchableOpacity>
 
