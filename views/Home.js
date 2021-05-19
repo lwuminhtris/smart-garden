@@ -9,6 +9,7 @@ import { Alert,
 import { TouchableOpacity } from 'react-native';
 import { createStackNavigator } from '@react-navigation/stack'
 
+
 export default function Home({ navigation }) {
   return (
     <SafeAreaView style = {styles.container}>
@@ -47,7 +48,9 @@ export default function Home({ navigation }) {
               style = {styles.boxLogo}
               source = {require('../assets/wet.png')}
             />
-            <Text>
+            <Text
+              style = {styles.boxText}
+            >
               Độ ẩm
             </Text>
           </View>
@@ -69,7 +72,9 @@ export default function Home({ navigation }) {
               style = {styles.boxLogo}
               source = {require('../assets/temp.png')}
             />
-            <Text>
+            <Text
+              style = {styles.boxText}
+            >
               Nhiệt độ
             </Text>
           </View>
@@ -95,7 +100,9 @@ export default function Home({ navigation }) {
               style = {styles.boxLogo}
               source = {require('../assets/water.png')}
             />
-            <Text>
+            <Text
+              style = {styles.boxText}
+            >
               Mức nước
             </Text>
           </View>
@@ -121,7 +128,9 @@ export default function Home({ navigation }) {
               style = {styles.boxLogo}
               source = {require('../assets/light.png')}
             />
-            <Text>
+            <Text
+              style = {styles.boxText}
+            >
               Cường độ sáng
             </Text>
           </View>
@@ -177,19 +186,29 @@ const styles = StyleSheet.create({
   },
   standardView : {
     width: '90%',
-    height: 110,
+    height: 120,
     flexDirection: 'row',
     justifyContent: 'space-between',
     marginTop: 10,
+  },
+  boxInsideView: {
+    justifyContent: 'space-evenly',
+    flexDirection: 'column',
+    margin: 10,
   },
   boxLogo: {
     resizeMode: 'contain',
     width: 35,
     height: 35,
   },
-  boxInsideView: {
-    justifyContent: 'space-evenly',
-    flexDirection: 'column',
-    margin: 10,
+  boxText: {
+    fontWeight: 'normal',
+    fontSize: 20,
+    fontFamily: 'sans-serif-light',
+    marginTop: 5,
+    marginBottom: 5,
+  },
+  boxControlText: {
+
   }
 });

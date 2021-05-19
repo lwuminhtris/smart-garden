@@ -69,6 +69,7 @@ export default function SignIn({ navigation }) {
               borderWidth: 1,
               borderColor: 'white',
               padding: 10,
+              backgroundColor: 'white',
             }}
 
           />
@@ -102,6 +103,7 @@ export default function SignIn({ navigation }) {
               borderWidth: 1,
               borderColor: 'white',
               padding: 10,
+              backgroundColor: 'white',
             }}
           />
         </View>
