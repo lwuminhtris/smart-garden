@@ -95,7 +95,7 @@ export default function Welcome({ navigation}) {
               color: '#0EAD69',
             }}
           >
-            Đăng ký
+            Đăng Ký
           </Text>
         </TouchableOpacity>
 
