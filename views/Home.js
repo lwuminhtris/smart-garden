@@ -7,7 +7,6 @@ import { Alert,
           TextInput,
 } from 'react-native';
 import { TouchableOpacity } from 'react-native';
-import { NavigationContainer } from '@react-navigation/native'
 import { createStackNavigator } from '@react-navigation/stack'
 
 export default function Home({ navigation }) {
@@ -41,9 +40,17 @@ export default function Home({ navigation }) {
               borderRadius: 10,
           }}
         >
-          <Text>
-            Độ ẩm
-          </Text>
+          <View
+            style = {styles.boxInsideView}
+          >
+            <Image
+              style = {styles.boxLogo}
+              source = {require('../assets/wet.png')}
+            />
+            <Text>
+              Độ ẩm
+            </Text>
+          </View>
         </TouchableOpacity>
 
         <TouchableOpacity
@@ -55,9 +62,17 @@ export default function Home({ navigation }) {
               borderRadius: 10,
           }}
         >
-          <Text>
-            Nhiệt độ
-          </Text>
+          <View
+            style = {styles.boxInsideView}
+          >
+            <Image
+              style = {styles.boxLogo}
+              source = {require('../assets/temp.png')}
+            />
+            <Text>
+              Nhiệt độ
+            </Text>
+          </View>
         </TouchableOpacity>
       </View>
 
@@ -73,9 +88,17 @@ export default function Home({ navigation }) {
               borderRadius: 10,
           }}
         >
-          <Text>
-            Mức nước
-          </Text>
+          <View
+            style = {styles.boxInsideView}
+          >
+            <Image
+              style = {styles.boxLogo}
+              source = {require('../assets/water.png')}
+            />
+            <Text>
+              Mức nước
+            </Text>
+          </View>
         </TouchableOpacity>        
       </View>
 
@@ -91,9 +114,17 @@ export default function Home({ navigation }) {
               borderRadius: 10,
           }}
         >
-          <Text>
-            Cường độ sáng
-          </Text>
+          <View
+            style = {styles.boxInsideView}
+          >
+            <Image
+              style = {styles.boxLogo}
+              source = {require('../assets/light.png')}
+            />
+            <Text>
+              Cường độ sáng
+            </Text>
+          </View>
         </TouchableOpacity>        
       </View>
 
@@ -150,5 +181,15 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     marginTop: 10,
+  },
+  boxLogo: {
+    resizeMode: 'contain',
+    width: 35,
+    height: 35,
+  },
+  boxInsideView: {
+    justifyContent: 'space-evenly',
+    flexDirection: 'column',
+    margin: 10,
   }
 });

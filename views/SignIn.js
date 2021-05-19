@@ -7,7 +7,6 @@ import { Alert,
           TextInput,
 } from 'react-native';
 import { TouchableOpacity } from 'react-native';
-import { NavigationContainer } from '@react-navigation/native'
 import { createStackNavigator } from '@react-navigation/stack'
 import Home from './Home'
 
