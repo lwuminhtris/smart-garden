@@ -8,9 +8,13 @@ import { Alert,
 } from 'react-native';
 import { TouchableOpacity } from 'react-native';
 import { createStackNavigator } from '@react-navigation/stack'
-
+import { useFonts } from 'expo-font'
 
 export default function Home({ navigation }) {
+  let [fontsLoaded] = useFonts({
+    'BeVietnam-Regular': require('../assets/fonts/BeVietnam-Regular.ttf'),
+    'BeVietnam-Bold': require('../assets/fonts/BeVietnam-Bold.ttf')
+  });
   return (
     <SafeAreaView style = {styles.container}>
       <View
@@ -53,6 +57,12 @@ export default function Home({ navigation }) {
             >
               Độ ẩm
             </Text>
+            <Text
+              style = {styles.boxControlText}
+              // return wet sensor here
+            >
+              WET_SENSOR
+            </Text>
           </View>
         </TouchableOpacity>
 
@@ -76,6 +86,12 @@ export default function Home({ navigation }) {
               style = {styles.boxText}
             >
               Nhiệt độ
+            </Text>
+            <Text
+              style = {styles.boxControlText}
+              // return wet sensor here
+            >
+              TEMP_SENSOR
             </Text>
           </View>
         </TouchableOpacity>
@@ -105,6 +121,12 @@ export default function Home({ navigation }) {
             >
               Mức nước
             </Text>
+            <Text
+              style = {styles.boxControlText}
+              // return wet sensor here
+            >
+              WATER_SENSOR
+            </Text>
           </View>
         </TouchableOpacity>        
       </View>
@@ -133,6 +155,12 @@ export default function Home({ navigation }) {
             >
               Cường độ sáng
             </Text>
+            <Text
+              style = {styles.boxControlText}
+              // return wet sensor here
+            >
+              LIGHT_SENSOR
+            </Text>
           </View>
         </TouchableOpacity>        
       </View>
@@ -149,9 +177,15 @@ export default function Home({ navigation }) {
               borderRadius: 10,
           }}
         >
-          <Text>
-            Thống kê chi tiết
-          </Text>
+          <View style = {styles.boxFeatures}>
+            <Image
+              style = {styles.boxFeaturesLogo}
+              source = {require('../assets/statistic.png')}
+            />
+            <Text style = {styles.boxFeaturesText}>
+              THỐNG KÊ CHI TIẾT
+            </Text>
+          </View>
         </TouchableOpacity>        
       </View>
 
@@ -167,9 +201,15 @@ export default function Home({ navigation }) {
               borderRadius: 10,
           }}
         >
-          <Text>
-            Điều khiển thiết bị
-          </Text>
+          <View style = {styles.boxFeatures}>
+            <Image
+              style = {styles.boxFeaturesLogo}
+              source = {require('../assets/control.png')}
+            />
+            <Text style = {styles.boxFeaturesText}>
+              ĐIỀU KHIỂN THIẾT BỊ
+            </Text>
+          </View>
         </TouchableOpacity>        
       </View>
     </SafeAreaView>
@@ -192,6 +232,7 @@ const styles = StyleSheet.create({
     marginTop: 10,
   },
   boxInsideView: {
+    flex: 1,
     justifyContent: 'space-evenly',
     flexDirection: 'column',
     margin: 10,
@@ -203,12 +244,35 @@ const styles = StyleSheet.create({
   },
   boxText: {
     fontWeight: 'normal',
-    fontSize: 20,
-    fontFamily: 'sans-serif-light',
+    fontSize: 14,
+    fontFamily: 'BeVietnam-Regular',
     marginTop: 5,
     marginBottom: 5,
+    color: '#06492C',
   },
   boxControlText: {
-
+    fontWeight: 'bold',
+    fontSize: 16,
+    fontFamily: 'BeVietnam-Bold',
+    color: '#06492C',
+  },
+  boxFeatures: {
+    flex: 1,
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },  
+  boxFeaturesText: {
+    textAlign: 'center',
+    fontWeight: 'bold',
+    fontFamily: 'BeVietnam-Bold',
+    fontSize: 18,
+    color: '#06492C',
+  },
+  boxFeaturesLogo: {
+    resizeMode: 'contain',
+    width: 35,
+    height: 35,
+    marginRight: 10,
   }
 });
