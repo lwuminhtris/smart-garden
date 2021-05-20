@@ -200,6 +200,7 @@ export default function Home({ navigation }) {
               elevation: 10,
               borderRadius: 10,
           }}
+          onPress = {() => navigation.navigate('Control')}
         >
           <View style = {styles.boxFeatures}>
             <Image
