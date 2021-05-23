@@ -11,11 +11,28 @@ import { createStackNavigator } from '@react-navigation/stack'
 import { useFonts } from 'expo-font'
 import { useState } from 'react';
 
+
 function DeviceInformation(props) {
   const [isEnabled, setIsEnabled] = useState(false)
-  const toggleSwitch = () => {
+  const toggleSwitch = async () => {
     setIsEnabled(previousState => !previousState)
+    if(isEnabled == false) {
+      // Alert.alert("ON", "ON")
+      // let response = await fetch('http://127.0.0.1:5000/lightOn')
+      // console.log(response)
+      let Response = fetch('http://10.0.2.2/lightOn')
+      Response.catch((Reject) => { console.log(Reject)})
+      // console.log(Response)
+    } else {
+      // Alert.alert("OFF", "OFF")
+      // let response = await fetch('http://127.0.0.1:5000/lightOff')
+      // console.log(response)
+      let Response = fetch('http://10.0.2.2/lightOff')
+      Response.catch((Reject) => { console.log(Reject)})
+      // console.log(Response)
+    }
   }
+  
   return (
     <View style = {styles.sensorBoxInside}>
       <View
@@ -32,7 +49,7 @@ function DeviceInformation(props) {
           value = {isEnabled}
           onValueChange = {toggleSwitch}
         >
-        
+          
         </Switch>
       </View>
     </View>
@@ -40,6 +57,7 @@ function DeviceInformation(props) {
 }
 
 export default function Control({ navigation }) {
+  
   return (
     <SafeAreaView
       style = {styles.container}

@@ -9,8 +9,12 @@ import { Alert,
 import { TouchableOpacity } from 'react-native';
 import { createStackNavigator } from '@react-navigation/stack'
 import Home from './Home'
+import { useFonts } from 'expo-font'
 
 export default function SignIn({ navigation }) {
+  let [fontsLoaded] = useFonts({
+    'OpenSans-SemiBold': require('../assets/fonts/OpenSans-SemiBold.ttf'),
+  });
   return (
     <SafeAreaView style = {styles.container}>
       <ImageBackground 
@@ -51,6 +55,7 @@ export default function SignIn({ navigation }) {
           <Text
             style = {{
               color: 'white',
+              fontFamily: 'OpenSans-SemiBold',
             }}
           >
             TÊN ĐĂNG NHẬP
@@ -85,6 +90,7 @@ export default function SignIn({ navigation }) {
           <Text
             style = {{
               color: 'white',
+              fontFamily: 'OpenSans-SemiBold',
             }}
           >
             MẬT KHẨU
