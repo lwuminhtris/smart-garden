@@ -12,7 +12,9 @@ import com.android.build.OutputFile
  * `apply from: "../../node_modules/react-native/react.gradle"` line.
  *
  * project.ext.react = [
- *   // the name of the generated asset file containing your JS bundle
+ *   // the name of the generated asset file containing y
+ *
+ *  qour JS bundle
  *   bundleAssetName: "index.android.bundle",
  *
  *   // the entry file for bundle generation. If none specified and

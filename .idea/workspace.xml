@@ -35,6 +35,7 @@
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
+    <option name="showMembers" value="true" />
   </component>
   <component name="PropertiesComponent">
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
@@ -97,6 +98,10 @@
       <screen x="0" y="0" width="1920" height="1080" />
     </state>
     <state x="740" y="294" key="FileChooserDialogImpl/0.0.1920.1080/-1920.0.1920.1080@0.0.1920.1080" timestamp="1621734939542" />
+    <state x="778" y="442" key="Github.CreateGistDialog" timestamp="1621777417585">
+      <screen x="0" y="0" width="1920" height="1080" />
+    </state>
+    <state x="778" y="442" key="Github.CreateGistDialog/0.0.1920.1080/-1920.0.1920.1080@0.0.1920.1080" timestamp="1621777417585" />
     <state x="440" y="114" key="SettingsEditor" timestamp="1621765802752">
       <screen x="0" y="0" width="1920" height="1080" />
     </state>
@@ -109,9 +114,9 @@
       <screen x="0" y="0" width="1920" height="1080" />
     </state>
     <state x="92" y="92" width="1736" height="896" key="com.intellij.history.integration.ui.views.FileHistoryDialog/0.0.1920.1080/-1920.0.1920.1080@0.0.1920.1080" timestamp="1621735000998" />
-    <state x="623" y="235" width="672" height="678" key="search.everywhere.popup" timestamp="1621765811944">
+    <state x="623" y="235" width="672" height="678" key="search.everywhere.popup" timestamp="1621777508454">
       <screen x="0" y="0" width="1920" height="1080" />
     </state>
-    <state x="623" y="235" width="672" height="678" key="search.everywhere.popup/0.0.1920.1080/-1920.0.1920.1080@0.0.1920.1080" timestamp="1621765811944" />
+    <state x="623" y="235" width="672" height="678" key="search.everywhere.popup/0.0.1920.1080/-1920.0.1920.1080@0.0.1920.1080" timestamp="1621777508454" />
   </component>
 </project>
