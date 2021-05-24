@@ -1,5 +1,5 @@
 import { StatusBar } from 'expo-status-bar';
-import React from 'react';
+import React, { Component } from 'react';
 import { Alert, 
           Button, StyleSheet, 
           Text, View, SafeAreaView, 
@@ -10,6 +10,13 @@ import { TouchableOpacity } from 'react-native';
 import { createStackNavigator } from '@react-navigation/stack'
 import { useFonts } from 'expo-font'
 import { useState } from 'react';
+import { render } from 'react-dom';
+
+
+function getValue() {
+  let Response = fetch('https://127.0.0.1:5000/api/test/data')
+  console.log(Response)
+}
 
 
 function DeviceInformation(props) {
@@ -18,16 +25,12 @@ function DeviceInformation(props) {
     setIsEnabled(previousState => !previousState)
     if(isEnabled == false) {
       // Alert.alert("ON", "ON")
-      // let response = await fetch('http://127.0.0.1:5000/lightOn')
-      // console.log(response)
-      let Response = fetch('http://10.0.2.2/lightOn')
+      let Response = fetch('http://10.0.2.2:5000/api/test?param=ON')
       Response.catch((Reject) => { console.log(Reject)})
       // console.log(Response)
     } else {
       // Alert.alert("OFF", "OFF")
-      // let response = await fetch('http://127.0.0.1:5000/lightOff')
-      // console.log(response)
-      let Response = fetch('http://10.0.2.2/lightOff')
+      let Response = fetch('http://10.0.2.2:5000/api/test?param=OFF')
       Response.catch((Reject) => { console.log(Reject)})
       // console.log(Response)
     }
@@ -56,8 +59,9 @@ function DeviceInformation(props) {
   )
 }
 
+/*
 export default function Control({ navigation }) {
-  
+
   return (
     <SafeAreaView
       style = {styles.container}
@@ -84,6 +88,43 @@ export default function Control({ navigation }) {
       </View>
     </SafeAreaView>
   );
+}
+*/
+
+export default class Control extends Component {
+  constructor(props) {
+    super(props)
+    this.state = 0
+  }
+
+  render() {
+    return (
+      <SafeAreaView
+        style = {styles.container}
+      >
+        <View
+          style = {{
+            width: '90%',
+            height: 'auto',
+            alignItems: 'center',
+          }}
+        > 
+          <Text>
+            TRUNG TÂM ĐIỀU KHIỂN THIẾT BỊ
+          </Text>
+          <Text>
+            userId: 000000
+          </Text>
+        </View>
+
+        <View
+          style = {styles.sensorBox}
+        > 
+          <DeviceInformation/>
+        </View>
+      </SafeAreaView>
+    );
+  }
 }
 
 const styles = StyleSheet.create({
