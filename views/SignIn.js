@@ -72,7 +72,7 @@ export default class SignIn extends Component {
             <Text
               style = {{
                 color: 'white',
-                fontFamily: 'OpenSans-SemiBold',
+                // fontFamily: 'OpenSans-SemiBold',
               }}
             >
               TÊN ĐĂNG NHẬP
@@ -107,7 +107,7 @@ export default class SignIn extends Component {
             <Text
               style = {{
                 color: 'white',
-                fontFamily: 'OpenSans-SemiBold',
+                // fontFamily: 'OpenSans-SemiBold',
               }}
             >
               MẬT KHẨU
@@ -174,11 +174,9 @@ export default class SignIn extends Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    // backgroundColor: 'dodgerblue',
     alignItems: 'center',
     justifyContent: 'center',
     flexWrap: 'nowrap',
-    // backgroundColor:  '#0EAD69',
   },
   standardView : {
 

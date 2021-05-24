@@ -11,25 +11,51 @@ import { createStackNavigator } from '@react-navigation/stack'
 import { useFonts } from 'expo-font'
 import { useState } from 'react';
 import { render } from 'react-dom';
+import io from 'socket.io-client'
+import { useEffect } from 'react';
 
 
-function getValue() {
-  let Response = fetch('https://127.0.0.1:5000/api/test/data')
-  console.log(Response)
-}
+async function getValue(setIsEnabled) {
+      // let Response = await fetch('http://127.0.0.1:5000/api/test/data')
+      let Response = await fetch('http://10.0.2.2:5000/api/test/data')
+      let responseJson = await Response.json()
+      console.log(responseJson.value)
+
+      if(responseJson.value == "ON") {
+        // Alert.alert("ON", "ON")
+        setIsEnabled(true)
+        return true
+      } else {
+        // Alert.alert("FALSE", "FALSE")
+        setIsEnabled(false)
+        return false
+      }
+};
 
 
 function DeviceInformation(props) {
-  const [isEnabled, setIsEnabled] = useState(false)
+  // hook 
+  const [isEnabled, setIsEnabled] = useState()
+
+  useEffect(() => {
+    // Alert.alert("BOO", "BOO")
+    setInterval(() => {
+      getValue(setIsEnabled)
+    }, 1000)
+  }, [])
+  
   const toggleSwitch = async () => {
-    setIsEnabled(previousState => !previousState)
+    // setIsEnabled(previousState => !previousState)
+
     if(isEnabled == false) {
       // Alert.alert("ON", "ON")
+      setIsEnabled(true)
       let Response = fetch('http://10.0.2.2:5000/api/test?param=ON')
       Response.catch((Reject) => { console.log(Reject)})
       // console.log(Response)
     } else {
       // Alert.alert("OFF", "OFF")
+      setIsEnabled(false)
       let Response = fetch('http://10.0.2.2:5000/api/test?param=OFF')
       Response.catch((Reject) => { console.log(Reject)})
       // console.log(Response)
@@ -45,7 +71,9 @@ function DeviceInformation(props) {
           margin: 10,
         }}
       >
-        <Text>
+        <Text
+          style = {styles.sensorBoxText}
+        >
           Đèn số 1
         </Text>
         <Switch
@@ -59,45 +87,33 @@ function DeviceInformation(props) {
   )
 }
 
-/*
-export default function Control({ navigation }) {
-
-  return (
-    <SafeAreaView
-      style = {styles.container}
-    >
-      <View
-        style = {{
-          width: '90%',
-          height: 'auto',
-          alignItems: 'center',
-        }}
-      > 
-        <Text>
-          TRUNG TÂM ĐIỀU KHIỂN THIẾT BỊ
-        </Text>
-        <Text>
-          userId: 000000
-        </Text>
-      </View>
-
-      <View
-        style = {styles.sensorBox}
-      > 
-        <DeviceInformation/>
-      </View>
-    </SafeAreaView>
-  );
-}
-*/
 
 export default class Control extends Component {
+  
   constructor(props) {
     super(props)
-    this.state = 0
+    // this.state = getValue()
+  };
+
+  /*
+  componentDidMount() {
+    this.tracking = setInterval(
+      () => this.ifDataChange(), 
+      100
+    )
   }
 
+  componentWillUnmount() {
+    clearInterval(this.tracking, 1000)
+  }
+
+  ifDataChange () {
+    this.setState(getValue())
+  }
+  */
+
   render() {
+    const { navigation } = this.props
     return (
       <SafeAreaView
         style = {styles.container}
@@ -144,7 +160,11 @@ const styles = StyleSheet.create({
     elevation: 10,
     borderRadius: 10,
   },
-  sensorBoxInside: {
-
-  }
+  sensorBoxText: {
+    textAlign: 'center',
+    fontWeight: 'bold',
+    // fontFamily: 'BeVietnam-Bold',
+    fontSize: 18,
+    color: '#06492C',
+  },
 })

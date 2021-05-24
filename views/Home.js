@@ -264,7 +264,7 @@ const styles = StyleSheet.create({
   boxText: {
     fontWeight: 'normal',
     fontSize: 14,
-    fontFamily: 'BeVietnam-Regular',
+    // fontFamily: 'BeVietnam-Regular',
     marginTop: 5,
     marginBottom: 5,
     color: '#06492C',
@@ -272,7 +272,7 @@ const styles = StyleSheet.create({
   boxControlText: {
     fontWeight: 'bold',
     fontSize: 16,
-    fontFamily: 'BeVietnam-Bold',
+    // fontFamily: 'BeVietnam-Bold',
     color: '#06492C',
   },
   boxFeatures: {
@@ -284,7 +284,7 @@ const styles = StyleSheet.create({
   boxFeaturesText: {
     textAlign: 'center',
     fontWeight: 'bold',
-    fontFamily: 'BeVietnam-Bold',
+    // fontFamily: 'BeVietnam-Bold',
     fontSize: 18,
     color: '#06492C',
   },
