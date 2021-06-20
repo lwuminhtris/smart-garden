@@ -1,10 +1,11 @@
 import { StatusBar } from 'expo-status-bar';
 import React, { Component } from 'react';
-import { Alert, 
-          Button, StyleSheet, 
-          Text, View, SafeAreaView, 
-          Image, ImageBackground,
-          TextInput,
+import {
+  Alert,
+  Button, StyleSheet,
+  Text, View, SafeAreaView,
+  Image, ImageBackground,
+  TextInput,
 } from 'react-native';
 import { TouchableOpacity } from 'react-native';
 import { createStackNavigator } from '@react-navigation/stack'
@@ -16,29 +17,56 @@ let customFonts = {
   'OpenSans-SemiBold': require('../assets/fonts/OpenSans-SemiBold.ttf'),
 };
 
+global.account_name = [];
+
+async function login(usr, pwd) {
+  let loginResponse = await fetch('https://iotdudes-smart-garden.herokuapp.com/api/account/', {
+    method: 'POST',
+    headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({
+      username: usr,
+      password: pwd,
+    })
+  })
+  let _loginResponse = await loginResponse.json()
+  return _loginResponse.status
+}
+
 export default class SignIn extends Component {
+
+  constructor(props) {
+    super(props)
+    this.state = {
+      username: '',
+      password: ''
+    }
+  }
+
   state = {
     fontsLoaded: false,
   }
 
   async _loadFontAsync() {
     await Font.loadAsync(customFonts)
-    this.setState({fontsLoaded: true})
+    this.setState({ fontsLoaded: true })
   }
 
-  componentDidMount() {
-    this._loadFontAsync()
+  async componentDidMount() {
+    console.log(await login('test', 'test'))
   }
 
   render() {
-    const {navigation} = this.props
+    const { navigation } = this.props
     return (
-      <SafeAreaView style = {styles.container}>
-        <ImageBackground 
-          source = { 
-            require('../assets/banner-1.png')
+      <SafeAreaView style={styles.container}>
+        <ImageBackground
+          source={
+            require('../assets/video-welcome.gif')
           }
-          style = {{
+          style={{
             flex: 1,
             width: '100%',
             height: '100%',
@@ -47,13 +75,13 @@ export default class SignIn extends Component {
           }}
         >
           <View
-            style = {{
+            style={{
               width: '80%',
               height: 40,
             }}
           >
             <Text
-              style = {{
+              style={{
                 fontWeight: 'bold',
                 fontSize: 25,
                 color: 'white',
@@ -63,14 +91,14 @@ export default class SignIn extends Component {
             </Text>
           </View>
           <View
-            style = {{
+            style={{
               width: '80%',
               height: 40,
               marginBottom: -10,
             }}
           >
             <Text
-              style = {{
+              style={{
                 color: 'white',
                 // fontFamily: 'OpenSans-SemiBold',
               }}
@@ -79,13 +107,13 @@ export default class SignIn extends Component {
             </Text>
           </View>
           <View
-            style = {{
+            style={{
               height: 40,
               width: '80%'
             }}
           >
             <TextInput
-              style = {{
+              style={{
                 height: '100%',
                 borderRadius: 4,
                 borderWidth: 1,
@@ -93,11 +121,16 @@ export default class SignIn extends Component {
                 padding: 10,
                 backgroundColor: 'white',
               }}
-
+              onChangeText={(usr) => {
+                this.setState({
+                  username: usr,
+                  password: this.state.password
+                })
+              }}
             />
           </View>
           <View
-            style = {{
+            style={{
               width: '80%',
               height: 40,
               marginTop: 10,
@@ -105,7 +138,7 @@ export default class SignIn extends Component {
             }}
           >
             <Text
-              style = {{
+              style={{
                 color: 'white',
                 // fontFamily: 'OpenSans-SemiBold',
               }}
@@ -114,13 +147,13 @@ export default class SignIn extends Component {
             </Text>
           </View>
           <View
-            style = {{
+            style={{
               height: 40,
               width: '80%'
             }}
           >
             <TextInput
-              style = {{
+              style={{
                 height: '100%',
                 borderRadius: 4,
                 borderWidth: 1,
@@ -128,18 +161,24 @@ export default class SignIn extends Component {
                 padding: 10,
                 backgroundColor: 'white',
               }}
+              onChangeText={(pwd) => {
+                this.setState({
+                  username: this.state.username,
+                  password: pwd
+                })
+              }}
             />
           </View>
           <View
-            style = {{
+            style={{
               width: '80%',
               alignContent: 'center',
               justifyContent: 'center',
               marginTop: 10,
             }}
-          > 
-          <TouchableOpacity
-              style = {{
+          >
+            <TouchableOpacity
+              style={{
                 marginTop: 10,
                 backgroundColor: 'white',
                 alignContent: 'center',
@@ -150,13 +189,25 @@ export default class SignIn extends Component {
                 borderColor: 'white',
                 borderWidth: 2,
                 borderRadius: 4,
-      
+
               }}
 
-              onPress = { () => navigation.navigate('Home')}
+              onPress={async () => {
+                // console.log(this.state.username, this.state.password)
+                // let status = await login(this.state.username, this.state.password)
+                // console.log(status)
+                // if (status == 'true') {
+                //   global.account_name[0] = this.state.username
+                //   navigation.navigate('Home')
+                // } else {
+                //   Alert.alert("Lỗi", "Sai tên đăng nhập hoặc mật khẩu")
+                // }
+                navigation.navigate('Home')
+              }
+              }
             >
               <Text
-                style = {{
+                style={{
                   fontWeight: 'bold',
                   color: '#0EAD69',
                 }}
@@ -178,7 +229,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     flexWrap: 'nowrap',
   },
-  standardView : {
+  standardView: {
 
   }
 });
