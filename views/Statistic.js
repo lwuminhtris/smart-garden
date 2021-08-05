@@ -51,7 +51,7 @@ function SensorInformation(props) {
         for (let i = 0; i < 7; i++) {
           if (dataJSON.data[i] != null) {
             created_at.push(dataJSON.data[i].created_at.slice(11, 16))
-            value.push(dataJSON.data[i].value)
+            value.push(parseInt(dataJSON.data[i].value))
           } else {
             created_at.push(0)
             value.push(0)
@@ -63,7 +63,7 @@ function SensorInformation(props) {
         for (let i = 0; i < 7; i++) {
           if (dataJSON.data[i] != null) {
             created_at.push(dataJSON.data[i].created_at.slice(11, 16))
-            value.push(dataJSON.data[i].value.temp)
+            value.push(parseInt(dataJSON.data[i].value.temp))
           } else {
             created_at.push(0)
             value.push(0)
@@ -75,7 +75,7 @@ function SensorInformation(props) {
         for (let i = 0; i < 7; i++) {
           if (dataJSON.data[i] != null) {
             created_at.push(dataJSON.data[i].created_at.slice(11, 16))
-            value.push(dataJSON.data[i].value.humid)
+            value.push(parseInt(dataJSON.data[i].value.humid))
           } else {
             created_at.push(0)
             value.push(0)

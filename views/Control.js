@@ -21,7 +21,7 @@ function SuccessConnectedSensorStatusText() {
     <Text
       style={styles.sensorInformationStateText}
     >
-      KẾT NỐI: ĐÃ KẾT NỐI
+      • ĐÃ KẾT NỐI
     </Text>
   )
 }
@@ -52,7 +52,7 @@ function ActiveSensorStatusText() {
     <Text
       style={styles.sensorInformationStateText}
     >
-      TÌNH TRẠNG: ĐANG HOẠT ĐỘNG
+      • ĐANG HOẠT ĐỘNG
     </Text>
   )
 }
@@ -316,7 +316,7 @@ async function changeRateAlert(feedName, feedValue) {
     })
   })
   let lineJSON = await (line.json())
-  console.log(lineJSON)
+  console.log(`Data of ${feedName}`, lineJSON)
 }
 
 function SetRateComponent() {
@@ -461,6 +461,7 @@ export default class Control extends Component {
   }
 
   render() {
+    const { navigation } = this.props
     return (
       <ScrollView>
         <SafeAreaView
@@ -533,6 +534,31 @@ export default class Control extends Component {
                 onPress={() => this.setState({ showRate: !this.state.showRate })}
               >
                 Đặt giới hạn
+              </Text>
+            </TouchableOpacity>
+
+
+            <TouchableOpacity
+              style={{
+                flex: 0,
+                backgroundColor: '#0EAD69',
+                alignContent: 'center',
+                alignItems: 'center',
+                justifyContent: 'center',
+                width: '50%',
+                height: 40,
+                elevation: 10,
+                borderRadius: 4,
+                marginBottom: 4,
+              }}
+              onPress={() => navigation.navigate('UserLog')}
+            >
+              <Text
+                style={{
+                  color: 'white'
+                }}
+              >
+                Nhật ký sử dụng
               </Text>
             </TouchableOpacity>
 

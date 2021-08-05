@@ -153,6 +153,7 @@ export default class SignIn extends Component {
             }}
           >
             <TextInput
+              secureTextEntry={true}
               style={{
                 height: '100%',
                 borderRadius: 4,
@@ -193,16 +194,16 @@ export default class SignIn extends Component {
               }}
 
               onPress={async () => {
-                // console.log(this.state.username, this.state.password)
-                // let status = await login(this.state.username, this.state.password)
-                // console.log(status)
-                // if (status == 'true') {
-                //   global.account_name[0] = this.state.username
-                //   navigation.navigate('Home')
-                // } else {
-                //   Alert.alert("Lỗi", "Sai tên đăng nhập hoặc mật khẩu")
-                // }
-                navigation.navigate('Home')
+                console.log(this.state.username, this.state.password)
+                let status = await login(this.state.username, this.state.password)
+                console.log(status)
+                if (status == 'true') {
+                  global.account_name[0] = this.state.username
+                  navigation.navigate('Home')
+                } else {
+                  Alert.alert("Lỗi", "Sai tên đăng nhập hoặc mật khẩu")
+                }
+                // navigation.navigate('Home')
               }
               }
             >

@@ -1,23 +1,15 @@
 import { StatusBar } from 'expo-status-bar';
 import React, { Component } from 'react';
 import {
-  Alert,
-  Button, StyleSheet,
+  StyleSheet,
   Text, View, SafeAreaView,
   Image, ImageBackground,
   TextInput,
 } from 'react-native';
 import { TouchableOpacity } from 'react-native';
 import { createStackNavigator } from '@react-navigation/stack'
-// import { useFonts } from 'expo-font'
-import * as Font from 'expo-font'
-import { and } from 'react-native-reanimated';
-// import './SignIn.js'
+import { BlurView } from 'expo-blur';
 
-let customFonts = {
-  'BeVietnam-Regular': require('../assets/fonts/BeVietnam-Regular.ttf'),
-  'BeVietnam-Bold': require('../assets/fonts/BeVietnam-Bold.ttf')
-};
 
 async function getWarningRate() {
   let tempRate = await fetch('https://iotdudes-smart-garden.herokuapp.com/api/account/temp_warning')
@@ -105,35 +97,38 @@ export default class Home extends Component {
   }
 
   async componentDidMount() {
-    let newState = await dataRetriever()
-    try {
-      this.setState({
-        humid: newState.humid,
-        temp: newState.temp,
-        soil: newState.soil,
-        light: newState.light
-      })
-      let warningRate = await getWarningRate()
+    this.dataTrack = setInterval(async () => {
+      let newState = await dataRetriever()
+      try {
+        this.setState({
+          humid: newState.humid,
+          temp: newState.temp,
+          soil: newState.soil,
+          light: newState.light
+        })
+        let warningRate = await getWarningRate()
 
-      if (+warningRate.tempRate < this.state.temp) {
-        this.setState({ tempWarningRate: '#c41831' })
-        console.log("Above")
-      } else {
-        this.setState({ tempWarningRate: '#06492C' })
-        console.log("Under")
+        if (+warningRate.tempRate < this.state.temp) {
+          this.setState({ tempWarningRate: '#c41831' })
+          // console.log("Above")
+        } else {
+          this.setState({ tempWarningRate: '#06492C' })
+          // console.log("Under")
+        }
+
+        if (+warningRate.humidityRate < this.state.humid) {
+          this.setState({ humidityWarningRate: '#c41831' })
+          // console.log("Above")
+        } else {
+          this.setState({ humidityWarningRate: '#06492C' })
+          // console.log("Under")
+        }
+
+      } catch (error) {
+        console.log('Error: ', error)
       }
+    }, 1000)
 
-      if (+warningRate.humidityRate < this.state.humid) {
-        this.setState({ humidityWarningRate: '#c41831' })
-        console.log("Above")
-      } else {
-        this.setState({ humidityWarningRate: '#06492C' })
-        console.log("Under")
-      }
-
-    } catch (error) {
-      console.log('Error: ', error)
-    }
     //   this.dataTrack = setInterval(async () => {
     //     let newState = await dataRetriever()
     //     try {
@@ -178,7 +173,7 @@ export default class Home extends Component {
         <View
           style={styles.standardView}
         >
-          <TouchableOpacity
+          <View
             style={{
               width: '37%',
               height: '100%',
@@ -192,7 +187,7 @@ export default class Home extends Component {
             >
               <Image
                 style={styles.boxLogo}
-                source={require('../assets/wet.png')}
+                source={require('../assets/new-wet.png')}
               />
               <Text
                 style={styles.boxText}
@@ -210,7 +205,7 @@ export default class Home extends Component {
                 {this.state.humid}%
               </Text>
             </View>
-          </TouchableOpacity>
+          </View>
 
           <TouchableOpacity
             style={{
@@ -226,7 +221,7 @@ export default class Home extends Component {
             >
               <Image
                 style={styles.boxLogo}
-                source={require('../assets/temp.png')}
+                source={require('../assets/new-temp.png')}
               />
               <Text
                 style={styles.boxText}
@@ -252,7 +247,7 @@ export default class Home extends Component {
         >
           <TouchableOpacity
             style={{
-              width: '100%',
+              width: '60%',
               height: '100%',
               backgroundColor: 'white',
               elevation: 10,
@@ -264,7 +259,7 @@ export default class Home extends Component {
             >
               <Image
                 style={styles.boxLogo}
-                source={require('../assets/water.png')}
+                source={require('../assets/new-water.png')}
               />
               <Text
                 style={styles.boxText}
@@ -279,14 +274,14 @@ export default class Home extends Component {
               </Text>
             </View>
           </TouchableOpacity>
-        </View>
+          {/* </View>
 
         <View
           style={styles.standardView}
-        >
+        > */}
           <TouchableOpacity
             style={{
-              width: '100%',
+              width: '37%',
               height: '100%',
               backgroundColor: 'white',
               elevation: 10,
@@ -298,7 +293,7 @@ export default class Home extends Component {
             >
               <Image
                 style={styles.boxLogo}
-                source={require('../assets/light.png')}
+                source={require('../assets/new-light.png')}
               />
               <Text
                 style={styles.boxText}
@@ -396,8 +391,9 @@ const styles = StyleSheet.create({
     height: 35,
   },
   boxText: {
+    fontFamily: 'sans-serif-light',
     fontWeight: 'normal',
-    fontSize: 14,
+    fontSize: 16,
     marginTop: 5,
     marginBottom: 5,
     color: '#06492C',
@@ -416,7 +412,7 @@ const styles = StyleSheet.create({
   boxFeaturesText: {
     textAlign: 'center',
     fontWeight: 'bold',
-    // fontFamily: 'BeVietnam-Bold',
+    fontFamily: 'sans-serif-medium',
     fontSize: 18,
     color: '#06492C',
   },

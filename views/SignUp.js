@@ -151,6 +151,7 @@ export default class SignUp extends Component {
             }}
           >
             <TextInput
+              secureTextEntry={true}
               style={{
                 height: '100%',
                 borderRadius: 4,
@@ -182,6 +183,42 @@ export default class SignUp extends Component {
               }}
             >
               NHẬP LẠI MẬT KHẨU
+            </Text>
+          </View>
+          <View
+            style={{
+              height: 40,
+              width: '80%'
+            }}
+          >
+            <TextInput
+              secureTextEntry={true}
+              style={{
+                height: '100%',
+                borderRadius: 4,
+                borderWidth: 1,
+                borderColor: 'white',
+                padding: 10,
+                backgroundColor: 'white',
+              }}
+            />
+          </View>
+
+          <View
+            style={{
+              width: '80%',
+              height: 40,
+              marginTop: 10,
+              marginBottom: -10,
+            }}
+          >
+            <Text
+              style={{
+                color: 'white',
+                // fontFamily: 'OpenSans-SemiBold',
+              }}
+            >
+              EMAIL
             </Text>
           </View>
           <View
