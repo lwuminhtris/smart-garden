@@ -1,220 +1,367 @@
 import { StatusBar } from 'expo-status-bar';
-import React from 'react';
-import { Alert, 
-          Button, StyleSheet, 
-          Text, View, SafeAreaView, 
-          Image, ImageBackground,
-          TextInput,
+import React, { Component } from 'react';
+import {
+  StyleSheet,
+  Text, View, SafeAreaView,
+  Image, ImageBackground,
+  TextInput,
 } from 'react-native';
 import { TouchableOpacity } from 'react-native';
 import { createStackNavigator } from '@react-navigation/stack'
-import { useFonts } from 'expo-font'
+import { BlurView } from 'expo-blur';
 
-export default function Home({ navigation }) {
-  let [fontsLoaded] = useFonts({
-    'BeVietnam-Regular': require('../assets/fonts/BeVietnam-Regular.ttf'),
-    'BeVietnam-Bold': require('../assets/fonts/BeVietnam-Bold.ttf')
-  });
-  return (
-    <SafeAreaView style = {styles.container}>
-      <View
-        style = {{
-          width: '90%',
-        }}
-      >
-        <Text
-          style = {{
-            fontSize: 26,
-            fontWeight: 'bold',
+
+async function getWarningRate() {
+  let tempRate = await fetch('https://iotdudes-smart-garden.herokuapp.com/api/account/temp_warning')
+  let tempRateJSON = await tempRate.json()
+
+  let humidityRate = await fetch('https://iotdudes-smart-garden.herokuapp.com/api/account/humidity_warning')
+  let humidityRateJSON = await humidityRate.json()
+
+  return {
+    "tempRate": tempRateJSON.rate,
+    "humidityRate": humidityRateJSON.rate
+  }
+}
+
+
+async function dataRetriever() {
+
+  try {
+    // temp - humid
+    let _tempResponse = await fetch('https://iotdudes-smart-garden.herokuapp.com/api/account/bk-iot-temp-humid/data', {
+      method: 'GET',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json'
+      }
+    })
+    let _tempResponseJSON = await _tempResponse.json()
+    let _temp = await _tempResponseJSON.value.temp
+    let _humid = await _tempResponseJSON.value.humid
+
+    let _soilResponse = await fetch('https://iotdudes-smart-garden.herokuapp.com/api/account/bk-iot-soil/data', {
+      method: 'GET',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json'
+      }
+    })
+    let _soilResponseJSON = await _soilResponse.json()
+    let _soil = await _soilResponseJSON.value
+
+    let _lightResponse = await fetch('https://iotdudes-smart-garden.herokuapp.com/api/account/bk-iot-light/data', {
+      method: 'GET',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json'
+      }
+    })
+    let _lightResponseJSON = await _lightResponse.json()
+    let _light = await _lightResponseJSON.value
+
+    // console.log({
+    //   "humid": _humid,
+    //   "temp": _temp,
+    //   "soil": _soil,
+    //   "light": _light,
+    // })
+
+    return {
+      "humid": _humid,
+      "temp": _temp,
+      "soil": _soil,
+      "light": _light
+    }
+  }
+  catch (error) {
+    console.log(`ERROR: ${error}`)
+  }
+
+  // console.log(_temp, _soil, _light)
+}
+
+
+export default class Home extends Component {
+
+  constructor(props) {
+    super(props)
+    this.state = {
+      humid: "0",
+      temp: "0",
+      soil: "0",
+      light: "0",
+      tempWarningRate: "#06492C",
+      humidityWarningRate: "#06492C"
+    }
+  }
+
+  async componentDidMount() {
+    this.dataTrack = setInterval(async () => {
+      let newState = await dataRetriever()
+      try {
+        this.setState({
+          humid: newState.humid,
+          temp: newState.temp,
+          soil: newState.soil,
+          light: newState.light
+        })
+        let warningRate = await getWarningRate()
+
+        if (+warningRate.tempRate < this.state.temp) {
+          this.setState({ tempWarningRate: '#c41831' })
+          // console.log("Above")
+        } else {
+          this.setState({ tempWarningRate: '#06492C' })
+          // console.log("Under")
+        }
+
+        if (+warningRate.humidityRate < this.state.humid) {
+          this.setState({ humidityWarningRate: '#c41831' })
+          // console.log("Above")
+        } else {
+          this.setState({ humidityWarningRate: '#06492C' })
+          // console.log("Under")
+        }
+
+      } catch (error) {
+        console.log('Error: ', error)
+      }
+    }, 1000)
+
+    //   this.dataTrack = setInterval(async () => {
+    //     let newState = await dataRetriever()
+    //     try {
+    //       this.setState({
+    //         humid: newState.humid,
+    //         temp: newState.temp,
+    //         soil: newState.soil,
+    //         light: newState.light
+    //       })
+    //     }
+    //     catch (error) {
+    //       console.log(error)
+    //     }
+    //   }, 1000)
+
+  }
+
+  async componentWillUnmount() {
+    // clearInterval(await this.dataTrack)
+  }
+
+  render() {
+    const { navigation } = this.props
+    return (
+      <SafeAreaView style={styles.container}>
+        <View
+          style={{
+            width: '90%',
           }}
         >
-          Chào Minh Trí
-        </Text>
-      </View>
+          <Text
+            style={{
+              fontSize: 26,
+              fontWeight: 'bold',
+            }}
+          >
+            Chào {global.account_name[0]}!
+          </Text>
+        </View>
 
-      
-      <View
-        style = {styles.standardView}        
-      > 
-        <TouchableOpacity
-          style = {{
-              width: '35%',
+
+        <View
+          style={styles.standardView}
+        >
+          <View
+            style={{
+              width: '37%',
               height: '100%',
               backgroundColor: 'white',
               elevation: 10,
               borderRadius: 10,
-          }}
-        >
-          <View
-            style = {styles.boxInsideView}
+            }}
           >
-            <Image
-              style = {styles.boxLogo}
-              source = {require('../assets/wet.png')}
-            />
-            <Text
-              style = {styles.boxText}
+            <View
+              style={styles.boxInsideView}
             >
-              Độ ẩm
-            </Text>
-            <Text
-              style = {styles.boxControlText}
+              <Image
+                style={styles.boxLogo}
+                source={require('../assets/new-wet.png')}
+              />
+              <Text
+                style={styles.boxText}
+              >
+                Độ ẩm
+              </Text>
+              <Text
+                style={{
+                  fontWeight: 'bold',
+                  fontSize: 16,
+                  color: this.state.humidityWarningRate,
+                }}
               // return wet sensor here
-            >
-              WET_SENSOR
-            </Text>
+              >
+                {this.state.humid}%
+              </Text>
+            </View>
           </View>
-        </TouchableOpacity>
 
-        <TouchableOpacity
-          style = {{
+          <TouchableOpacity
+            style={{
               width: '60%',
               height: '100%',
               backgroundColor: 'white',
               elevation: 10,
               borderRadius: 10,
-          }}
-        >
-          <View
-            style = {styles.boxInsideView}
+            }}
           >
-            <Image
-              style = {styles.boxLogo}
-              source = {require('../assets/temp.png')}
-            />
-            <Text
-              style = {styles.boxText}
+            <View
+              style={styles.boxInsideView}
             >
-              Nhiệt độ
-            </Text>
-            <Text
-              style = {styles.boxControlText}
+              <Image
+                style={styles.boxLogo}
+                source={require('../assets/new-temp.png')}
+              />
+              <Text
+                style={styles.boxText}
+              >
+                Nhiệt độ
+              </Text>
+              <Text
+                style={{
+                  fontWeight: 'bold',
+                  fontSize: 16,
+                  color: this.state.tempWarningRate,
+                }}
               // return wet sensor here
-            >
-              TEMP_SENSOR
-            </Text>
-          </View>
-        </TouchableOpacity>
-      </View>
+              >
+                {this.state.temp}°C
+              </Text>
+            </View>
+          </TouchableOpacity>
+        </View>
 
-      <View
-        style = {styles.standardView}
-      >
-        <TouchableOpacity
-          style = {{
-              width: '100%',
+        <View
+          style={styles.standardView}
+        >
+          <TouchableOpacity
+            style={{
+              width: '60%',
               height: '100%',
               backgroundColor: 'white',
               elevation: 10,
               borderRadius: 10,
-          }}
-        >
-          <View
-            style = {styles.boxInsideView}
+            }}
           >
-            <Image
-              style = {styles.boxLogo}
-              source = {require('../assets/water.png')}
-            />
-            <Text
-              style = {styles.boxText}
+            <View
+              style={styles.boxInsideView}
             >
-              Mức nước
-            </Text>
-            <Text
-              style = {styles.boxControlText}
+              <Image
+                style={styles.boxLogo}
+                source={require('../assets/new-water.png')}
+              />
+              <Text
+                style={styles.boxText}
+              >
+                Mức nước
+              </Text>
+              <Text
+                style={styles.boxControlText}
               // return wet sensor here
-            >
-              WATER_SENSOR
-            </Text>
-          </View>
-        </TouchableOpacity>        
-      </View>
+              >
+                {this.state.soil}%
+              </Text>
+            </View>
+          </TouchableOpacity>
+          {/* </View>
 
-      <View
-        style = {styles.standardView}
-      >
-        <TouchableOpacity
-          style = {{
-              width: '100%',
+        <View
+          style={styles.standardView}
+        > */}
+          <TouchableOpacity
+            style={{
+              width: '37%',
               height: '100%',
               backgroundColor: 'white',
               elevation: 10,
               borderRadius: 10,
-          }}
-        >
-          <View
-            style = {styles.boxInsideView}
+            }}
           >
-            <Image
-              style = {styles.boxLogo}
-              source = {require('../assets/light.png')}
-            />
-            <Text
-              style = {styles.boxText}
+            <View
+              style={styles.boxInsideView}
             >
-              Cường độ sáng
-            </Text>
-            <Text
-              style = {styles.boxControlText}
+              <Image
+                style={styles.boxLogo}
+                source={require('../assets/new-light.png')}
+              />
+              <Text
+                style={styles.boxText}
+              >
+                Cường độ sáng
+              </Text>
+              <Text
+                style={styles.boxControlText}
               // return wet sensor here
-            >
-              LIGHT_SENSOR
-            </Text>
-          </View>
-        </TouchableOpacity>        
-      </View>
+              >
+                {this.state.light} Lux
+              </Text>
+            </View>
+          </TouchableOpacity>
+        </View>
 
-      <View
-        style = {styles.standardView}
-      >
-        <TouchableOpacity
-          style = {{
+        <View
+          style={styles.standardView}
+        >
+          <TouchableOpacity
+            style={{
               width: '100%',
               height: '100%',
               backgroundColor: 'white',
               elevation: 10,
               borderRadius: 10,
-          }}
-        >
-          <View style = {styles.boxFeatures}>
-            <Image
-              style = {styles.boxFeaturesLogo}
-              source = {require('../assets/statistic.png')}
-            />
-            <Text style = {styles.boxFeaturesText}>
-              THỐNG KÊ CHI TIẾT
-            </Text>
-          </View>
-        </TouchableOpacity>        
-      </View>
+            }}
+            onPress={() => navigation.navigate('Statistic')}
+          >
+            <View style={styles.boxFeatures}>
+              <Image
+                style={styles.boxFeaturesLogo}
+                source={require('../assets/statistic.png')}
+              />
+              <Text style={styles.boxFeaturesText}>
+                THỐNG KÊ CHI TIẾT
+              </Text>
+            </View>
+          </TouchableOpacity>
+        </View>
 
-      <View
-        style = {styles.standardView}
-      >
-        <TouchableOpacity
-          style = {{
+        <View
+          style={styles.standardView}
+        >
+          <TouchableOpacity
+            style={{
               width: '100%',
               height: '100%',
               backgroundColor: 'white',
               elevation: 10,
               borderRadius: 10,
-          }}
-          onPress = {() => navigation.navigate('Control')}
-        >
-          <View style = {styles.boxFeatures}>
-            <Image
-              style = {styles.boxFeaturesLogo}
-              source = {require('../assets/control.png')}
-            />
-            <Text style = {styles.boxFeaturesText}>
-              ĐIỀU KHIỂN THIẾT BỊ
-            </Text>
-          </View>
-        </TouchableOpacity>        
-      </View>
-    </SafeAreaView>
-  );
+            }}
+            onPress={() => navigation.navigate('Control')}
+          >
+            <View style={styles.boxFeatures}>
+              <Image
+                style={styles.boxFeaturesLogo}
+                source={require('../assets/control.png')}
+              />
+              <Text style={styles.boxFeaturesText}>
+                ĐIỀU KHIỂN THIẾT BỊ
+              </Text>
+            </View>
+          </TouchableOpacity>
+        </View>
+      </SafeAreaView>
+    );
+  }
 }
 
 const styles = StyleSheet.create({
@@ -225,7 +372,7 @@ const styles = StyleSheet.create({
     flexWrap: 'nowrap',
     backgroundColor: '#F5FDFB',
   },
-  standardView : {
+  standardView: {
     width: '90%',
     height: 120,
     flexDirection: 'row',
@@ -244,9 +391,9 @@ const styles = StyleSheet.create({
     height: 35,
   },
   boxText: {
+    fontFamily: 'sans-serif-light',
     fontWeight: 'normal',
-    fontSize: 14,
-    fontFamily: 'BeVietnam-Regular',
+    fontSize: 16,
     marginTop: 5,
     marginBottom: 5,
     color: '#06492C',
@@ -254,7 +401,6 @@ const styles = StyleSheet.create({
   boxControlText: {
     fontWeight: 'bold',
     fontSize: 16,
-    fontFamily: 'BeVietnam-Bold',
     color: '#06492C',
   },
   boxFeatures: {
@@ -262,11 +408,11 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
-  },  
+  },
   boxFeaturesText: {
     textAlign: 'center',
     fontWeight: 'bold',
-    fontFamily: 'BeVietnam-Bold',
+    fontFamily: 'sans-serif-medium',
     fontSize: 18,
     color: '#06492C',
   },
